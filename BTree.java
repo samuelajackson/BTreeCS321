@@ -27,7 +27,7 @@ public class BTree {
 	 */
 	public BTree(int degree) {
 		degreeT = degree;
-		orderM = degree * 2;
+		orderM = degreeT * 2;
 		root = new BTreeNode(orderM);
 	}
 	
