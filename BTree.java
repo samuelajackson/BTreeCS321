@@ -28,13 +28,85 @@ public class BTree {
 	public BTree(int degree) {
 		degreeT = degree;
 		orderM = degreeT * 2;
-		root = new BTreeNode(orderM);
+		root = new BTreeNode(degreeT);
 	}
 	
-	// ==================================================
+	/**
+	 * Returns the minimum degree of the BTree
+	 * @return - degreeT of this BTree
+	 */
+	public int getDegree() {
+		return degreeT;
+	}
+	
+	/**
+	 * Returns the maximum order of the BTree
+	 * @return - orderM of this BTree
+	 */
+	public int getOrder() {
+		return orderM;
+	}
+	
+	/**
+	 * Returns the root node of the BTree
+	 * @return - a reference to the root BTreeNode
+	 */
+	public BTreeNode getRoot() {
+		return root;
+	}
+	
+	/**
+	 * Sets the root node of the BTree
+	 * @param newRoot - the node to become the new root
+	 */
+	public void setRoot(BTreeNode newRoot) {
+		root = newRoot;
+	}
+	
+	// ============================================================
 	// Class methods
-	// ==================================================
+	// ============================================================
 	
+	/**
+	 * Adds the specified object to the BTree
+	 * @param object - the object to be added
+	 */
+	public void add(TreeObject object) {
+		BTreeNode rootAfterAdd = root.add(object);
+		this.setRoot(rootAfterAdd);
+	}
 	
+	/**
+	 * Searches the BTree for the specified object
+	 * @param object - the TreeObject being searched for
+	 * @return - the specified TreeObject if found, null otherwise
+	 */
+	public TreeObject search(long data) {
+		BTreeNode current = root;
+		boolean found = false;
+		boolean end = false;
+		TreeObject result = null;
+		
+		while (!found && !end) {
+			int counter = 0;
+			while(data > current.getKey(counter).getData() && counter != current.lengthKeys()) {
+				counter++;
+			}
+			
+			if (data == current.getKey(counter).getData()) {
+				found = true;
+				result = current.getKey(counter);
+			}
+			
+			if (!current.isLeaf()) {
+				current = current.getChild(counter);
+			}
+			else {
+				end = true;
+			}
+		}
+		
+		return result;
+	}
 	
 }

@@ -134,8 +134,9 @@ public class BTreeNode {
 	 * Searches nodes and inserts TreeObject at proper location in
 	 * BTree
 	 * @param object - the TreeObject to be inserted
+	 * @return - the root of the BTree after the addition
 	 */
-	public void add(TreeObject object) {
+	public BTreeNode add(TreeObject object) {
 		BTreeNode current = this;
 		boolean isLeaf = this.isLeaf();
 		
@@ -147,7 +148,7 @@ public class BTreeNode {
 			
 			if(object.getData() == current.getKey(counter).getData()) {
 				current.getKey(counter).incrementFrequency();
-				return;
+				return this;
 			}
 			else {
 				current = current.getChild(counter);
@@ -166,7 +167,7 @@ public class BTreeNode {
 			
 			if(object.getData() == current.getKey(counter).getData()) {
 				current.getKey(counter).incrementFrequency();
-				return;
+				return this;
 			}
 			else {
 				current.shiftKeys(counter);
@@ -176,7 +177,16 @@ public class BTreeNode {
 		
 		if (current.lengthKeys() > maxKeys) {
 			current.split();
+			
+			if (parent == null) {
+				return this;
+			}
+			else {
+				return parent;
+			}
 		}
+		
+		return this;
 	}
 	
 	/**
