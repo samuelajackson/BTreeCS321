@@ -114,15 +114,19 @@ public class GeneBankCreateBTree {
 		}
 		//create a BTree to store information
 		BTree geneBankBTree = new BTree(degree);
-		long inLong=0, putLong = 0;
+		long inLong=0, putLong = 0, mask = 0;
 		int counter = 0;
+		
+		for(int i = 0; i < sequenceLength; i++) {
+			mask <<= 2;
+			mask |= 0b11; //creates a mask with enough bits
+		}
 		while(sc.hasNext() && sc.next() != "//") {
 			Reader letterReader = new StringReader(sc.next());
 			BufferedReader br = new BufferedReader(letterReader);
 			try {
 				int c = 0;
 				while((c = br.read()) != -1) { //let's read each line char by char, shall we?
-					char character = (char) c;
 					if(c == 65) { //A 00
 						inLong = 0b00;
 					}
@@ -135,20 +139,22 @@ public class GeneBankCreateBTree {
 					if(c == 71) { //G 10
 						inLong = 0b10;
 					}
-					if(counter < sequenceLength) {
-						sequenceLength <<= 2;
-						sequenceLength |= inLong;
-			//			System.out.println(putLong);
-						counter++;
+					if(c == 110) { //n
+						counter = 0;
+						inLong = 0;
+						putLong = 0;
 					}
-					else {
-						System.out.println(putLong);
-
+					if(counter < sequenceLength-1 && c != 110) {
 						putLong <<= 2;
 						putLong |= inLong;
-						long mask = 0b1111111111;
+						counter++;
+					}
+					else if(c != 110) {
+						putLong <<= 2;
+						putLong |= inLong;
 						putLong &= mask;
 						counter++;
+						geneBankBTree.add(new TreeObject(putLong)); 						
 					}
 
 				}
