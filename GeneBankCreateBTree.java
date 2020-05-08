@@ -117,7 +117,7 @@ public class GeneBankCreateBTree {
 			sc.next();
 		}
 		//create a BTree to store information
-		BTree geneBankBTree = new BTree(degree);
+		BTree geneBankBTree = new BTree(degree, sequenceLength);
 		long inLong=0, putLong = 0, mask = 0;
 		int counter = 0;
 		
@@ -158,20 +158,20 @@ public class GeneBankCreateBTree {
 						putLong |= inLong;
 						putLong &= mask;
 						counter++;
-						geneBankBTree.add(new TreeObject(putLong)); 						
+						geneBankBTree.add(new TreeObject(putLong, sequenceLength)); 						
 					}
 
-				}
+				}																						
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		if(debugLevel == 0) { //Print stuff to console
-			
+			System.out.println("BTree created successfully.");
 		}
 		else { //dump file
-			
+			geneBankBTree.getRoot().traverse(gbkFile.getName() + ".btree.dump." + sequenceLength);
 		}
 	}
 }
