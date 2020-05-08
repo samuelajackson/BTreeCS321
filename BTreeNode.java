@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.NoSuchElementException;
 
 /**
@@ -304,5 +307,34 @@ public class BTreeNode {
 		else {
 			return index;
 		}
+	}
+	
+	/**
+	 * Traverses the BTree in order. Dumps information into file with given name.
+	 * @param the name of the file to be created
+	 */
+	public void traverse(String fileName) {
+		File dumpFile = new File(fileName);
+			try {
+				if(dumpFile.createNewFile()) {
+					System.out.println("File created: " + dumpFile.getName());
+				}
+				FileWriter dumpFileWriter = null;
+				dumpFileWriter = new FileWriter(fileName);
+				int i = 0;
+				for(i = 0; i < this.lengthKeys(); i++) {
+					if(!this.isLeaf()) {
+						dumpFileWriter.write(children[i].toString());
+						children[i].traverse(fileName);
+					}
+				}
+				if(!isLeaf()) {
+					dumpFileWriter.write(children[i].toString());
+					children[i].traverse(fileName);
+				}
+				dumpFileWriter.close();
+			} catch (IOException e) {
+				e.printStackTrace(); //oops
+			}
 	}
 }
