@@ -1,3 +1,8 @@
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
 /**
  * CS321: Bioinformatics Group Project
  * 
@@ -6,7 +11,7 @@
  * 
  * @author Alex Guy, Sam Jackson, Terran Dykes
  */
-public class BTree {
+public class BTree implements Serializable {
 	// ============================================================
 	// Instance variables
 	// ============================================================
@@ -14,7 +19,9 @@ public class BTree {
 	private int degreeT;		// The minimum degree of the BTree
 	private int orderM;			// The maximum order of the BTree
 	private int sequenceLength;	// Length of one DNA sequence
-	private BTreeNode root;		// The root node of the BTree	
+	private BTreeNode root;		// The root node of the BTree
+	
+	private static final long serialVersionUID = 1579L;	// ID of BTree for serialization
 	
 	// ============================================================
 	// Constructor & getters/setters
@@ -119,5 +126,26 @@ public class BTree {
 		
 		return result;
 	}
+	
+	
+	public byte[] toStream() {
+		byte[] stream = null;
+		
+		try (ByteArrayOutputStream byteOutput = new ByteArrayOutputStream();
+				ObjectOutputStream output = new ObjectOutputStream(byteOutput);) {
+			output.writeObject(this);
+			stream = byteOutput.toByteArray();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+		
+		return stream;
+	}
+	
+	
+	
+	
+	
+	
 	
 }
