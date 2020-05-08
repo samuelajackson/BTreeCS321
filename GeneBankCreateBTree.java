@@ -18,15 +18,19 @@ public class GeneBankCreateBTree {
 
 	/**
 	 * Main function
-	 * @param args
+	 * @param args from user java GeneBankCreateBTree <0/1(no/with Cache)> <degree> <gbk file> <sequence length>
+	 * [<cache size>] [<debug level>]
+	 *
 	 */
 	public static void main(String[] args) {
+		String useMessage = "How to use: java GeneBankCreateBTree <0/1(no/with Cache)> <degree> <gbk file> <sequence length>\r\n" + 
+		"[<cache size>] [<debug level>]\r\n";
 		if(args.length < 4) {
-			//Not enough arguments
+			System.out.println(useMessage); //not enough args
 			System.exit(1);
 		}
 		else if(args.length > 6) {
-			//too many arguments
+			System.out.println(useMessage);//too many arguments
 			System.exit(1);
 		}
 		//At this point we probably have the correct number of args
@@ -121,7 +125,7 @@ public class GeneBankCreateBTree {
 			mask <<= 2;
 			mask |= 0b11; //creates a mask with enough bits
 		}
-		while(sc.hasNext() && sc.next() != "//") {
+		while(sc.hasNext() && sc.next() != "//") { //might 
 			Reader letterReader = new StringReader(sc.next());
 			BufferedReader br = new BufferedReader(letterReader);
 			try {
@@ -162,6 +166,12 @@ public class GeneBankCreateBTree {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
+		if(debugLevel == 0) { //Print stuff to console
+			
+		}
+		else { //dump file
+			
 		}
 	}
 }
