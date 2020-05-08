@@ -66,6 +66,14 @@ public class BTree {
 		root = newRoot;
 	}
 	
+	/**
+	 * Returns the length of one DNA sequence
+	 * @return - the value of sequenceLength
+	 */
+	public int getSequenceLength() {
+		return sequenceLength;
+	}
+	
 	// ============================================================
 	// Class methods
 	// ============================================================
