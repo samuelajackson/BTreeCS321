@@ -107,7 +107,7 @@ public class BTreeNode {
 	 * @return - the value of boolean leaf
 	 */
 	public boolean isLeaf() {
-		return (children.length == 0);
+		return (this.lengthChildren() == 0);
 	}
 	
 	/**
@@ -115,7 +115,11 @@ public class BTreeNode {
 	 * @return - the number of non-null elements in keys
 	 */
 	public int lengthKeys() {
-		return keys.length;
+		int i = 0;
+		while (i <= maxKeys && keys[i] != null) {
+			i++;
+		}
+		return i;
 	}
 	
 	/**
@@ -123,7 +127,11 @@ public class BTreeNode {
 	 * @return - the number of non-null elements in children
 	 */
 	public int lengthChildren() {
-		return children.length;
+		int i = 0;
+		while (i <= orderM && children[i] != null) {
+			i++;
+		}
+		return i;
 	}
 	
 	// ============================================================
@@ -142,11 +150,11 @@ public class BTreeNode {
 		
 		while (!isLeaf) {
 			int counter = 0;
-			while(object.getData() > current.getKey(counter).getData() && counter != current.lengthKeys()) {
+			while(counter != current.lengthKeys() && object.getData() > current.getKey(counter).getData()) {
 				counter++;
 			}
 			
-			if(object.getData() == current.getKey(counter).getData()) {
+			if(current.getKey(counter) != null && object.getData() == current.getKey(counter).getData()) {
 				current.getKey(counter).incrementFrequency();
 				return this;
 			}
@@ -161,11 +169,11 @@ public class BTreeNode {
 		}
 		else {
 			int counter = 0;
-			while(object.getData() > current.getKey(counter).getData() && counter != current.lengthKeys()) {
+			while(counter != current.lengthKeys() && object.getData() > current.getKey(counter).getData()) {
 				counter++;
 			}
 			
-			if(object.getData() == current.getKey(counter).getData()) {
+			if(current.getKey(counter) != null && object.getData() == current.getKey(counter).getData()) {
 				current.getKey(counter).incrementFrequency();
 				return this;
 			}
@@ -227,7 +235,9 @@ public class BTreeNode {
 		newChildIndex = 0;
 		for (int i = degreeT; i <= orderM; i++) {
 			newChild.setChild(children[i], newChildIndex);
-			newChild.getChild(newChildIndex).setParent(newChild);
+			if (children[i] != null) {
+				newChild.getChild(newChildIndex).setParent(newChild);
+			}
 			newChildIndex++;
 		}
 		
@@ -252,7 +262,7 @@ public class BTreeNode {
 			throw new IndexOutOfBoundsException();
 		}
 		
-		for (int i = keys.length; i > index; i--) {
+		for (int i = this.lengthKeys(); i > index; i--) {
 			keys[i] = keys[i-1];
 		}
 	}
@@ -266,7 +276,7 @@ public class BTreeNode {
 			throw new IndexOutOfBoundsException();
 		}
 		
-		for (int i = children.length; i > index; i--) {
+		for (int i = this.lengthChildren(); i > index; i--) {
 			children[i] = children[i-1];
 		}
 	}
@@ -279,7 +289,7 @@ public class BTreeNode {
 	private int getChildIndex(BTreeNode child) {
 		int index = 0;
 		boolean found = false;
-		while (!found && index != children.length) {
+		while (!found && index != this.lengthChildren()) {
 			if (children[index] == child) {
 				found = true;
 			}
