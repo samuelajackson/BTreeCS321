@@ -1,4 +1,10 @@
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+import java.util.Scanner;
 
 /**
  * CS321: Bioinformatics Group Project
@@ -26,9 +32,9 @@ public class GeneBankCreateBTree {
 		//At this point we probably have the correct number of args
 		//Variables set by user
 		boolean cache = false;
-		int degree;
-		File gbkFile;
-		int sequenceLength;
+		int degree = 1;//our default degree
+		File gbkFile = null;
+		int sequenceLength = 0;
 		if(Integer.parseInt(args[0]) < 0 || Integer.parseInt(args[0]) > 1) {
 			System.out.println("First argument must be either zero or one.");
 			System.exit(1);
@@ -93,6 +99,62 @@ public class GeneBankCreateBTree {
 				else {
 					debugLevel = Integer.parseInt(args[4]);
 				}
+			}
+		}
+		//At this point we should be all parsed up
+		Scanner sc = null;
+		try {
+			sc = new Scanner(gbkFile);
+		} catch (FileNotFoundException e) {
+			System.out.println("File not found.");
+			System.exit(1);
+		}
+		while(sc.hasNext() && sc.next().contentEquals("ORIGIN")) {
+			sc.next();
+		}
+		//create a BTree to store information
+		BTree geneBankBTree = new BTree(degree);
+		long inLong=0, putLong = 0;
+		int counter = 0;
+		while(sc.hasNext() && sc.next() != "//") {
+			Reader letterReader = new StringReader(sc.next());
+			BufferedReader br = new BufferedReader(letterReader);
+			try {
+				int c = 0;
+				while((c = br.read()) != -1) { //let's read each line char by char, shall we?
+					char character = (char) c;
+					if(c == 65) { //A 00
+						inLong = 0b00;
+					}
+					if(c == 84) { //T 11
+						inLong = 0b11;
+					}
+					if(c == 67) { //C  01
+						inLong = 0b01;
+					}
+					if(c == 71) { //G 10
+						inLong = 0b10;
+					}
+					if(counter < sequenceLength) {
+						sequenceLength <<= 2;
+						sequenceLength |= inLong;
+			//			System.out.println(putLong);
+						counter++;
+					}
+					else {
+						System.out.println(putLong);
+
+						putLong <<= 2;
+						putLong |= inLong;
+						long mask = 0b1111111111;
+						putLong &= mask;
+						counter++;
+					}
+
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}
