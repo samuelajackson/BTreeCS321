@@ -99,7 +99,7 @@ public class BTreeNode {
 	 * @param index - the index at which to link the child
 	 */
 	public void setChild(BTreeNode child, int index) {
-		if (index < 0 || index >= orderM) {
+		if (index < 0 || index > orderM) {
 			throw new IndexOutOfBoundsException();
 		}
 		children[index] = child;
