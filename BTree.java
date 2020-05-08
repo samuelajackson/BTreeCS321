@@ -11,9 +11,10 @@ public class BTree {
 	// Instance variables
 	// ============================================================
 	
-	private int degreeT;	// The minimum degree of the BTree
-	private int orderM;		// The maximum order of the BTree
-	private BTreeNode root;	// The root node of the BTree	
+	private int degreeT;		// The minimum degree of the BTree
+	private int orderM;			// The maximum order of the BTree
+	private int sequenceLength;	// Length of one DNA sequence
+	private BTreeNode root;		// The root node of the BTree	
 	
 	// ============================================================
 	// Constructor & getters/setters
@@ -24,10 +25,12 @@ public class BTree {
 	 * initializes root to an empty BTreeNode
 	 * 
 	 * @param degree - the minimum desired degree of the BTree
+	 * @param length - the length of one DNA sequence
 	 */
-	public BTree(int degree) {
+	public BTree(int degree, int length) {
 		degreeT = degree;
 		orderM = degreeT * 2;
+		sequenceLength = length;
 		root = new BTreeNode(degreeT);
 	}
 	

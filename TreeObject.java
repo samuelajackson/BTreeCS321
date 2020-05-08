@@ -11,6 +11,7 @@ public class TreeObject {
 
     private int frequency;
     private long data;
+    private int sequenceLength;
 
     /**
      * Constructor - Takes in long type data, our DNA string,
@@ -18,11 +19,13 @@ public class TreeObject {
      * 
      * @param data
      * @param frequency
+     * @param sequenceLength
      */
-    public TreeObject(long data, int frequency){
+    public TreeObject(long data, int frequency, int sequenceLength){
 
         this.frequency = frequency;
         this.data = data;
+        this.sequenceLength = sequenceLength;
     }
 
     /**
@@ -30,11 +33,13 @@ public class TreeObject {
      * is set at 1.
      * 
      * @param data
+     * @param sequenceLength
      */
-    public TreeObject(long data){
+    public TreeObject(long data, int sequenceLength){
 
         frequency = 1;
         this.data = data;
+        this.sequenceLength = sequenceLength;
     }
 
     public TreeObject(){}
