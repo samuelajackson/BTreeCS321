@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.NoSuchElementException;
 
 /**
@@ -12,17 +13,22 @@ import java.util.NoSuchElementException;
  * @author Alex Guy, Sam Jackson, Terran Dykes
  *
  */
-public class BTreeNode {
+public class BTreeNode implements Serializable {
 	// ============================================================
 	// Instance Variables
 	// ============================================================
 	
+	/**
+	 * 
+	 */
 	private int degreeT;			// Minimum degree of BTree
 	private int orderM;				// Maximum order of BTree
 	private int maxKeys;			// Max number of keys per node
 	private TreeObject[] keys;		// Array of keys
 	private BTreeNode[] children;	// Array of children
 	private BTreeNode parent;		// Parent node in BTree
+	
+	private static final long serialVersionUID = 1578L; // ID for serialization
 	
 	// ============================================================
 	// Constructors & getters/setters

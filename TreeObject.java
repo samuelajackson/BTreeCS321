@@ -1,3 +1,5 @@
+import java.io.Serializable;
+
 /**
  * CS321: Bioinformatics Group Project
  * 
@@ -6,12 +8,14 @@
  * 
  * @author Alex Guy, Sam Jackson, Terran Dykes
  */
-public class TreeObject {
+public class TreeObject implements Serializable {
 
 
     private int frequency;
     private long data;
     private int sequenceLength;
+    
+    private static final long serialVersionUID = 1577L; // ID for serialization
 
     /**
      * Constructor - Takes in long type data, our DNA string,
