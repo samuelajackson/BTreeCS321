@@ -1,4 +1,5 @@
-import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -127,19 +128,19 @@ public class BTree implements Serializable {
 		return result;
 	}
 	
-	
-	public byte[] toStream() {
-		byte[] stream = null;
-		
-		try (ByteArrayOutputStream byteOutput = new ByteArrayOutputStream();
-				ObjectOutputStream output = new ObjectOutputStream(byteOutput);) {
+	/**
+	 * Writes the BTree to a binary file with the given name
+	 * @param fileName - the name of the file to write the BTree to
+	 */
+	public void writeBinaryFile(String fileName) {
+		try (FileOutputStream fileOutput = new FileOutputStream(fileName);
+				ObjectOutputStream output = new ObjectOutputStream(fileOutput);) {
 			output.writeObject(this);
-			stream = byteOutput.toByteArray();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
-		
-		return stream;
 	}
 	
 	
