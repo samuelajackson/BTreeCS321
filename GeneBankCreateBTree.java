@@ -139,7 +139,7 @@ public class GeneBankCreateBTree {
 			try {
 				int c = 0;
 				while((c = br.read()) != -1) { //let's read each line char by char, shall we?
-					if (c >= 65 && c <= 110) {
+					if (c == 65 || c == 84 || c == 67 || c == 71 || c == 110) {
 						if(c == 65) { //A 00
 							inLong = 0b00;
 						}
