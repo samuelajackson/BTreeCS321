@@ -332,7 +332,7 @@ public class BTreeNode implements Serializable {
 					if(!this.isLeaf()) {
 						children[i].traverse(fileName);
 					}
-					dumpFileWriter.write(keys[i].toString());
+					dumpFileWriter.write(keys[i].toString() + "\n");
 				}
 				if(!isLeaf()) {
 					children[i].traverse(fileName);
