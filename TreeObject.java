@@ -90,8 +90,36 @@ public class TreeObject implements Serializable {
      * Prints DNA string (data) and it's related frequency.
      */
     public String toString(){
-
-        String result = data + ":  " + frequency;
+    	
+    	long mask = 0b11;
+    	long longSequence = data;
+    	long copySequence;
+    	long[] sequence = new long[sequenceLength];
+    	
+    	for (int i = sequenceLength - 1; i >= 0; i--) {
+    		copySequence = longSequence;
+    		copySequence &= mask;
+    		sequence[i] = copySequence;
+    		longSequence >>= 2;
+    	}
+    	
+    	String result = "";
+    	for (int i = 0; i < sequenceLength; i++) {
+    		if (sequence[i] == 0b00) {
+    			result += "A";
+    		}
+    		else if (sequence[i] == 0b11) {
+    			result += "T";
+    		}
+    		else if (sequence[i] == 0b01) {
+    			result += "C";
+    		}
+    		else {
+    			result += "G";
+    		}
+    	}
+    	
+        result += ": " + frequency;
         return result;
     }
 }
