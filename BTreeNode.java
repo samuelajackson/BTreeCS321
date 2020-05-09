@@ -324,12 +324,11 @@ public class BTreeNode {
 				int i = 0;
 				for(i = 0; i < this.lengthKeys(); i++) {
 					if(!this.isLeaf()) {
-						dumpFileWriter.write(children[i].toString());
 						children[i].traverse(fileName);
 					}
+					dumpFileWriter.write(keys[i].toString());
 				}
 				if(!isLeaf()) {
-					dumpFileWriter.write(children[i].toString());
 					children[i].traverse(fileName);
 				}
 				dumpFileWriter.close();
