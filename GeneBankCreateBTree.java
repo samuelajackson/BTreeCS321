@@ -113,9 +113,9 @@ public class GeneBankCreateBTree {
 			System.out.println("File not found.");
 			System.exit(1);
 		}
-		while(sc.hasNext() && sc.next().contentEquals("ORIGIN")) {
-			sc.next();
+		while(sc.hasNext() && !sc.next().contentEquals("ORIGIN")) {
 		}
+
 		//create a BTree to store information
 		BTree geneBankBTree = new BTree(degree, sequenceLength);
 		long inLong=0, putLong = 0, mask = 0;
@@ -125,8 +125,9 @@ public class GeneBankCreateBTree {
 			mask <<= 2;
 			mask |= 0b11; //creates a mask with enough bits
 		}
-		while(sc.hasNext() && sc.next() != "//") { //might 
-			Reader letterReader = new StringReader(sc.next());
+		String check;
+		while(sc.hasNext() && (check = sc.next()) != "//") { //might 
+			Reader letterReader = new StringReader(check);
 			BufferedReader br = new BufferedReader(letterReader);
 			try {
 				int c = 0;
