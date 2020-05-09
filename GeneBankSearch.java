@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.RandomAccessFile;
 import java.util.Scanner;
 
@@ -119,6 +120,8 @@ public class GeneBankSearch {
             System.exit(-1);
         }
 
+        btree = new BTree(degree, qflength);
+
         try{
             Scanner qs = new Scanner(qf);
             BTreeNode current;
@@ -129,10 +132,18 @@ public class GeneBankSearch {
                 found = false;
                 current = root;
                 
+                String seq = qs.nextLine();
+                long key = Long.parseLong(seq);
+      
+
+
 
             }
         }
-
+        catch(FileNotFoundException e){
+            System.err.println("Query file not found.");
+            System.exit(-1);
+        }
 
 
     }
