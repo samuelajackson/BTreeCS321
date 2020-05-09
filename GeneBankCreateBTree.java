@@ -106,6 +106,13 @@ public class GeneBankCreateBTree {
 			}
 		}
 		//At this point we should be all parsed up
+		
+		//If order is 0, instead use optimal order based on size of
+		// BTreeNode object
+		if (degree == 0) {
+			degree = 112;
+		}
+		
 		Scanner sc = null;
 		try {
 			sc = new Scanner(gbkFile);
