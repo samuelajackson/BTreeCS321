@@ -175,6 +175,9 @@ public class GeneBankCreateBTree {
 				e.printStackTrace();
 			}
 		}
+		
+		geneBankBTree.writeBinaryFile(gbkFile.getPath() + ".btree.data." + sequenceLength + "." + degree);
+		
 		if(debugLevel == 0) { //Print stuff to console
 			System.out.println("BTree created successfully.");
 		}
