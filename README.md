@@ -50,76 +50,54 @@ PROGRAM DESIGN:
  integer, encoding each letter as two bits of information for efficient
  storage. The long is then stored in a BTree (if any given string is
  already in the BTree, its frequency is incremented). Functionality of
- this class requires input from the user
-
- ArraySet implements the SimpleSet interface, which defines methods for a
- basic set collection. ArraySet, as the name implies, manages set elements
- in an array. A set only contains one unique instance of an element, so
- ArraySet only adds an element if it is not already in the array. Removing
- an element will only succeed if the element is found. Attempts to remove
- an element not in the set results in an ElementNotFoundException being
- thrown.
-
- As the underlying array capacity may not be the same size as the number of
- elements in the set, the array is maintained with the first element at 
- index 0 and with no gaps between elements. The next available index is
- used to indicate the current size of the set and to recognize when the
- array is not large enough to hold a new element.
-
- When the array capacity needs to be increased, a new array is created, 
- twice the capacity of the old array, and all elements are copied into
- the new array. The reverse is not true, however. As elements are removed,
- smaller arrays do not replace larger arrays. If memory use ever becomes 
- an issue, it may be worth modifying ArraySet to shrink when there is 
- excessive unused capacity.
-
- SetTester confirms correct operation of all SimpleSet methods for change
- scenarios involving sets from zero to three elements after add and
- remove changes. It is configured to use the ArraySet implementation of
- SimpleSet.
+ this class requires input from the user that decides the degree of the
+ BTree as well as the length of the strings of data.
+ 
+ The second driver class, GeneBankSearch, searches through an existing
+ Btree for the frequencies of strings of a given length. 
+ 
+ BTreeNode contains the bulk of BTree management functionality. It keeps
+ track of the keys in each node as well as the connections to children nodes
+ and its parent node. It also contains the logic for adding keys as well
+ as splitting when necessary. In addition, BTreeNode contains the method
+ for traversing the tree in an ordered manner, visiting each node and
+ transferring its information to the dump file when debug mode is set to 1.
+ 
+ Because so much functionality relating to the BTree is in the BTreeNode,
+ the BTree class itself only contains a few methods. Among those is the
+ search method that searches the BTree for a given long. Another, the 
+ writeBinaryFile method, creates a binary file from the BTree. The TreeObject
+ class simply manages information about the objects we are passing into
+ the BTree, in our case longs. This class's toString method translates
+ longs back into a string of gene indicators.
  
 
 TESTING:
 
- SetTester was the primary mechanism for testing ArraySet. SetTester was
- written before ArraySet, so test-driven development helped ensure that
- all ArraySet functionality was being tested from the start.
-
- Scenarios being tested by SetTester include:
-   a new empty set
-   adding the first element to an empty set
-   removing the element from a one element set
-   adding a duplicate element to a set with one element
-   adding a second element to a set with one element
-   removing each of the two elements in a two element set
-   adding a third element to a two element set
-   removing each of the three elements from a three element set
+ We had initially planned on more rigorous testing, but due to current
+ circumstance we were unable to do so. Thus, all testing was done
+ by hand either locally or on the Onyx server. This was done by comparing
+ actual output to expected results.
  
- Additional scenarios would be beneficial, such as adding duplicates to
- sets with multiple elements, but time did not permit more extensive
- testing.
-
- Not all tests are currently passing, but work is still underway to fix
- remaining bugs.
+ This was made easier by the dump files produced by GeneBankCreateBTree.
+ These files gave us specific data to be compared to a given sample. If
+ given more time, this program would benefit from specific unit tests.
 
 
 DISCUSSION:
  
- Test-driven development was a new idea, for me, and I was a little
- skeptical that it would make a difference, but it did help me catch a
- couple of bugs early on having to do with my rear index and with
- expanding the array capacity that I would have missed. Since ArraySet
- still isn't bug free, I'm glad I don't have those problems in there at
- the same time!
-
- Working with shifting elements is also a challenge. I think I have the
- idea down, but implementing it can still be difficult. I'm starting to
- see why everyone suggests drawing pictures of the processes before
- coding, to make sure the order of statements actually makes sense.
-
- I haven't made extensive use of the Eclipse debugger, yet, but I think I 
- need to start using it to figure out my remaining bugs. Reading the code
- over and over isn't helping, anymore, and I don't want to fill my code
- with print statements I'll just have to rip out, again, later.
+ This project faced a lot of hurdles, not the least of which was the current
+ pandemic. Because team members were not able to meet in person, all coordination
+ had to occur via email. This lead to a slower pace, as many methods in the program
+ rely on information in other classes that were being worked on by different team
+ members.
+ 
+ On top of that, two team members had to move during the project, which limited
+ time spent on the project and further interfered with communication. Furthermore,
+ although a cache was introduced to the project, we were unable to properly link
+ it as we didn't fully understand how to implement it into both driver classes.
+ 
+ Despite these difficulties, we worked as a team to the best of our abilities
+ and coordinated to finish the project on time.
 
  
