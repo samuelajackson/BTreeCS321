@@ -120,10 +120,12 @@ public class GeneBankCreateBTree {
 			System.out.println("File not found.");
 			System.exit(1);
 		}
+		
+		//create a BTree to store information
+		BTree geneBankBTree = new BTree(degree, sequenceLength);
+		
 		while(sc.hasNext()) {
 			if(sc.next().contentEquals("ORIGIN")) {
-			//create a BTree to store information
-			BTree geneBankBTree = new BTree(degree, sequenceLength);
 			long inLong=0, putLong = 0, mask = 0;
 			int counter = 0;
 			
