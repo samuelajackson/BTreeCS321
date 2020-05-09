@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.RandomAccessFile;
 import java.util.Scanner;
 
 /**
@@ -12,10 +13,12 @@ import java.util.Scanner;
  */
 public class GeneBankSearch {
     
-    private static int withCache;
-    private static String btreeFile, queryFile, degree, sequence;
-    private static int cacheSize, debugLevel, degreeLevel;
+    private static int withCache, degree;
+    private static String btreeFile, queryFile, qfName;
+    private static String[] btfName;
+    private static int cacheSize, debugLevel, btlength, qflength;
     private static BTree btree;
+    private static File btf, qf;
 
     public static void main(String[] args) {
 
@@ -91,54 +94,32 @@ public class GeneBankSearch {
 
     private static void GeneBankSearch(int cache, String bTreeFile, String queryFile, int cacheSize, int debugLevel) {
     
-        for(int i = (bTreeFile.length() - 1); i >= 0; i--){
-            if(bTreeFile.charAt(i) != '.'){
-                degree += btreeFile.charAt(i);
-            }
-            else{
-                break;
-            }
+        btf = new File(bTreeFile);
+        qf = new File(queryFile);
+
+        if(!btf.exists() || !btf.isFile()){
+            System.err.println("BTreeFile does not exist.");
+            System.exit(-1);
+        }
+        if(!qf.exists() || !qf.isFile()){
+            System.err.println("BTreeFile does not exist.");
+            System.exit(-1);
+        }
+
+        btfName = btf.getName().split("\\.");
+        btlength = Integer.parseInt(btfName[4]);
+        degree = Integer.parseInt(btfName[5]);
+
+        qfName = qf.getName();
+        qflength = Integer.parseInt(qfName.substring(qfName.lastIndexOf('y') +1));
+        
+        if(btlength != qflength){
+            System.err.println("Query length does not equal BTree length.");
+            System.exit(-1);
         }
 
 
-        for(int j = (bTreeFile.length() - 1) - (degree.length()-1); j>=0; j--){
-            if(bTreeFile.charAt(j) != '.'){
-                sequence += bTreeFile.charAt(j);
-            }
-            else{
-                break;
-            }
-        }
 
-        degree = reverse(degree);
-        sequence = reverse(sequence);
-
-        degreeLevel = Integer.parseInt(degree);
-
-		try{
-            btree = new BTree(degreeLevel, sequence.length());
-            File qFile = new File(queryFile);
-            Scanner s = new Scanner(qFile);
-
-            while(s.hasNext()){
-                String query = s.nextLine();
-
-                long qLong = Long.parseLong(query);
-
-                TreeObject found = btree.search(qLong);
-
-                System.out.println(found.getData() + " : " + found.getFrequency());
-
-            }
-            s.close();
-		}
-		catch(Exception e){
-			System.err.println("Provided bTree or query file invalid.");
-			System.exit(-1);
-		}
-		
-		
-		
     }
     
     public static String reverse(String s){
