@@ -18,6 +18,7 @@ public class GeneBankSearch {
     private static String[] btfName;
     private static int cacheSize, debugLevel, btlength, qflength;
     private static BTree btree;
+    private static BTreeNode root;
     private static File btf, qf;
 
     public static void main(String[] args) {
@@ -118,12 +119,23 @@ public class GeneBankSearch {
             System.exit(-1);
         }
 
+        try{
+            Scanner qs = new Scanner(qf);
+            BTreeNode current;
+            long target, loc;
+            boolean found;
+
+            while(qs.hasNext()){
+                found = false;
+                current = root;
+                
+
+            }
+        }
+
 
 
     }
     
-    public static String reverse(String s){
-        return new StringBuffer(s).reverse().toString();
-    }
 	
 }
