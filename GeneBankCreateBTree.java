@@ -139,36 +139,37 @@ public class GeneBankCreateBTree {
 			try {
 				int c = 0;
 				while((c = br.read()) != -1) { //let's read each line char by char, shall we?
-					if(c == 65) { //A 00
-						inLong = 0b00;
+					if (c >= 65 && c <= 110) {
+						if(c == 65) { //A 00
+							inLong = 0b00;
+						}
+						if(c == 84) { //T 11
+							inLong = 0b11;
+						}
+						if(c == 67) { //C  01
+							inLong = 0b01;
+						}
+						if(c == 71) { //G 10
+							inLong = 0b10;
+						}
+						if(c == 110) { //n
+							counter = 0;
+							inLong = 0;
+							putLong = 0;
+						}
+						if(counter < sequenceLength-1 && c != 110) {
+							putLong <<= 2;
+							putLong |= inLong;
+							counter++;
+						}
+						else if(c != 110) {
+							putLong <<= 2;
+							putLong |= inLong;
+							putLong &= mask;
+							counter++;
+							geneBankBTree.add(new TreeObject(putLong, sequenceLength)); 						
+						}
 					}
-					if(c == 84) { //T 11
-						inLong = 0b11;
-					}
-					if(c == 67) { //C  01
-						inLong = 0b01;
-					}
-					if(c == 71) { //G 10
-						inLong = 0b10;
-					}
-					if(c == 110) { //n
-						counter = 0;
-						inLong = 0;
-						putLong = 0;
-					}
-					if(counter < sequenceLength-1 && c != 110) {
-						putLong <<= 2;
-						putLong |= inLong;
-						counter++;
-					}
-					else if(c != 110) {
-						putLong <<= 2;
-						putLong |= inLong;
-						putLong &= mask;
-						counter++;
-						geneBankBTree.add(new TreeObject(putLong, sequenceLength)); 						
-					}
-
 				}																						
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
