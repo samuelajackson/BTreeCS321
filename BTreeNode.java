@@ -330,16 +330,39 @@ public class BTreeNode implements Serializable {
 				int i = 0;
 				for(i = 0; i < this.lengthKeys(); i++) {
 					if(!this.isLeaf()) {
-						children[i].traverse(fileName);
+						children[i].traverse(fileName, dumpFileWriter);
 					}
 					dumpFileWriter.write(keys[i].toString() + "\n");
 				}
 				if(!isLeaf()) {
-					children[i].traverse(fileName);
+					children[i].traverse(fileName, dumpFileWriter);
 				}
 				dumpFileWriter.close();
 			} catch (IOException e) {
 				e.printStackTrace(); //oops
 			}
+	}
+	
+	/**
+	 * Traverses the BTree in order. Dumps information into file with given name.
+	 * @param fileName - the name of the file to be created
+	 * @param fileWriter - the file writer writing to the file
+	 */
+	public void traverse(String fileName, FileWriter fileWriter) {
+		try {
+			FileWriter dumpFileWriter = fileWriter;
+			int i = 0;
+			for(i = 0; i < this.lengthKeys(); i++) {
+				if(!this.isLeaf()) {
+					children[i].traverse(fileName, dumpFileWriter);
+				}
+				dumpFileWriter.write(keys[i].toString() + "\n");
+			}
+			if(!isLeaf()) {
+				children[i].traverse(fileName, dumpFileWriter);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
