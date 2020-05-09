@@ -106,16 +106,16 @@ public class TreeObject implements Serializable {
     	String result = "";
     	for (int i = 0; i < sequenceLength; i++) {
     		if (sequence[i] == 0b00) {
-    			result += "A";
+    			result += "a";
     		}
     		else if (sequence[i] == 0b11) {
-    			result += "T";
+    			result += "t";
     		}
     		else if (sequence[i] == 0b01) {
-    			result += "C";
+    			result += "c";
     		}
     		else {
-    			result += "G";
+    			result += "g";
     		}
     	}
     	
