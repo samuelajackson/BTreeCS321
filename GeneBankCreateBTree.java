@@ -120,70 +120,72 @@ public class GeneBankCreateBTree {
 			System.out.println("File not found.");
 			System.exit(1);
 		}
-		while(sc.hasNext() && !sc.next().contentEquals("ORIGIN")) {
-		}
-
-		//create a BTree to store information
-		BTree geneBankBTree = new BTree(degree, sequenceLength);
-		long inLong=0, putLong = 0, mask = 0;
-		int counter = 0;
-		
-		for(int i = 0; i < sequenceLength; i++) {
-			mask <<= 2;
-			mask |= 0b11; //creates a mask with enough bits
-		}
-		String check;
-		while(sc.hasNext() && (check = sc.next()) != "//") { //might 
-			Reader letterReader = new StringReader(check);
-			BufferedReader br = new BufferedReader(letterReader);
-			try {
-				int c = 0;
-				while((c = br.read()) != -1) { //let's read each line char by char, shall we?
-					if (c == 65 || c == 84 || c == 67 || c == 71 || c == 110) {
-						if(c == 65) { //A 00
-							inLong = 0b00;
+		while(sc.hasNext()) {
+			if(sc.next().contentEquals("ORIGIN")) {
+			//create a BTree to store information
+			BTree geneBankBTree = new BTree(degree, sequenceLength);
+			long inLong=0, putLong = 0, mask = 0;
+			int counter = 0;
+			
+			for(int i = 0; i < sequenceLength; i++) {
+				mask <<= 2;
+				mask |= 0b11; //creates a mask with enough bits
+			}
+			String check;
+			while(sc.hasNext() && (check = sc.next()) != "//") { //might 
+				Reader letterReader = new StringReader(check);
+				BufferedReader br = new BufferedReader(letterReader);
+				try {
+					int c = 0;
+					while((c = br.read()) != -1) { //let's read each line char by char, shall we?
+						if (c == 65 || c == 84 || c == 67 || c == 71 || c == 110) {
+							if(c == 65) { //A 00
+								inLong = 0b00;
+							}
+							if(c == 84) { //T 11
+								inLong = 0b11;
+							}
+							if(c == 67) { //C  01
+								inLong = 0b01;
+							}
+							if(c == 71) { //G 10
+								inLong = 0b10;
+							}
+							if(c == 110) { //n
+								counter = 0;
+								inLong = 0;
+								putLong = 0;
+							}
+							if(counter < sequenceLength-1 && c != 110) {
+								putLong <<= 2;
+								putLong |= inLong;
+								counter++;
+							}
+							else if(c != 110) {
+								putLong <<= 2;
+								putLong |= inLong;
+								putLong &= mask;
+								counter++;
+								geneBankBTree.add(new TreeObject(putLong, sequenceLength)); 						
+							}
 						}
-						if(c == 84) { //T 11
-							inLong = 0b11;
-						}
-						if(c == 67) { //C  01
-							inLong = 0b01;
-						}
-						if(c == 71) { //G 10
-							inLong = 0b10;
-						}
-						if(c == 110) { //n
-							counter = 0;
-							inLong = 0;
-							putLong = 0;
-						}
-						if(counter < sequenceLength-1 && c != 110) {
-							putLong <<= 2;
-							putLong |= inLong;
-							counter++;
-						}
-						else if(c != 110) {
-							putLong <<= 2;
-							putLong |= inLong;
-							putLong &= mask;
-							counter++;
-							geneBankBTree.add(new TreeObject(putLong, sequenceLength)); 						
-						}
-					}
-				}																						
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+					}																						
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+			geneBankBTree.writeBinaryFile(gbkFile.getPath() + ".btree.data." + sequenceLength + "." + degree);
+			
+			if(debugLevel == 0) { //Print stuff to console
+				System.out.println("BTree created successfully.");
+			}
+			else { //dump file
+				geneBankBTree.getRoot().traverse(gbkFile.getName() + ".btree.dump." + sequenceLength);
 			}
 		}
-		
-		geneBankBTree.writeBinaryFile(gbkFile.getPath() + ".btree.data." + sequenceLength + "." + degree);
-		
-		if(debugLevel == 0) { //Print stuff to console
-			System.out.println("BTree created successfully.");
 		}
-		else { //dump file
-			geneBankBTree.getRoot().traverse(gbkFile.getName() + ".btree.dump." + sequenceLength);
-		}
+		
 	}
 }
